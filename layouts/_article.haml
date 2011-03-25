@@ -15,7 +15,7 @@
       %ul.tags
         - item[:tags].sort.each do |tag|
           %li
-            %a(href="/tags/#{tag}/" class='tag')= tag
+            %a(href="#{link_path "/tags/#{tag}/"}" class='tag')= tag
   
   .body
     != content || partial(item)

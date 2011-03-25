@@ -8,7 +8,7 @@
 .pagination-page
   - sorted_articles.slice(first, last).each do |item|
     .excerpt
-      - url = route_path(item)
+      - url = link_item(item)
       %h2
         %a(href="#{url}" title="Full article" class="permalink")= item[:title]
       .body
@@ -26,5 +26,5 @@
           - if page == i
             %strong=i
           - else
-            %a{:href => route_path(@config[:articles][:page][:url]%[i])}= i
+            %a{:href => link_item(@config[:articles][:page][:url]%[i])}= i
 

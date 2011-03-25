@@ -13,7 +13,7 @@
   end
 
   def link_unless_current(s)
-    if @item.identifier != "/#{s}/" then "<a href='/#{s}/'>#{s}</a></li>" else s end
+    if @item.identifier != "/#{s}/" then "<a href='"+link_path("/#{s}/")+"'>#{s}</a></li>" else s end
   end
   
   def logo
@@ -31,7 +31,7 @@
     %meta(content="text/html; charset=utf-8" http-equiv="Content-Type")
     %meta(name="keywords" content="#{keywords}")
     %meta(name="description" content="#{@item[:excerpt]}")
-    %link(href="/style.css" media="screen" rel="stylesheet" type="text/css")
+    %link(href="#{link_path("/style.css")}" media="screen" rel="stylesheet" type="text/css")
 
   %body
     -# needed since some content render <pre> blocks
@@ -41,7 +41,7 @@
         %li= link_unless_current "articles"
         %li= link_unless_current "tags"
         %li
-          %a(href='/atom.xml') atom feed
+          %a(href="#{link_path("/atom.css")}") atom feed
       .clear
 
       - if @item[:kind] == 'article'

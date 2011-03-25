@@ -6,7 +6,7 @@
 .tag-page
   - items_with_tag(tag).each do |item|
     .excerpt
-      - url = route_path(item)
+      - url = link_item(item)
       %h2
         %a(href="#{url}" title="Full article" class="permalink")= item[:title]
       .body

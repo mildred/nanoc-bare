@@ -2,10 +2,17 @@ include Nanoc3::Helpers::Rendering
 include Nanoc3::Helpers::Blogging
 include Nanoc3::Helpers::XMLSitemap
 include Nanoc3::Helpers::LinkTo
-include Nanoc3::Helpers::Tagging
 require 'builder'
 require 'fileutils'
 require 'time'
+
+def link_path(path)
+  relative_path_to(path)
+end
+
+def link_item(identifier_or_item)
+  relative_path_to(route_path(identifier_or_item))
+end
 
 # Hyphens are converted to sub-directories in the output folder.
 #
@@ -19,7 +26,11 @@ require 'time'
 #
 def route_path(identifier_or_item)
   item = identifier_or_item.is_a?(Nanoc3::Item) ? identifier_or_item : item_by_identifier(identifier_or_item)
-  item.reps[0].path
+  if item.reps.empty? then
+    raise Exception, "Cannot link to #{reps.identifier}. No representation generated."
+  else
+    item.reps[0].path
+  end
 end
 
 # Creates in-memory tag pages from partial: layouts/_tag_page.haml

@@ -34,6 +34,7 @@ module MGutz
     def status(filename, created_at = nil, content = nil)
       content ||= File.readlines(filename)
       digest = Digest::SHA1.hexdigest(content)
+      if not @changes then @changes = {} end
       item = @changes[filename.to_sym]
 
       if !item
