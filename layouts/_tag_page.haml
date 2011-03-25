@@ -1,0 +1,16 @@
+---
+---
+%h1
+  = "#{tag.capitalize} Articles"
+
+.tag-page
+  - items_with_tag(tag).each do |item|
+    .excerpt
+      - url = route_path(item)
+      %h2
+        %a(href="#{url}" title="Full article" class="permalink")= item[:title]
+      .body
+        - if item[:excerpt]
+          %p= item[:excerpt]
+        - else
+          != content || partial(item)

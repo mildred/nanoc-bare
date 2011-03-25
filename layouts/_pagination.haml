@@ -1,0 +1,30 @@
+---
+---
+%h1
+  = "Archive page #{page}"
+%p
+  %em= "Articles from #{first+1} to #{last}"
+
+.pagination-page
+  - sorted_articles.slice(first, last).each do |item|
+    .excerpt
+      - url = route_path(item)
+      %h2
+        %a(href="#{url}" title="Full article" class="permalink")= item[:title]
+      .body
+        - if item[:excerpt]
+          %p= item[:excerpt]
+        - else
+          != content || partial(item)
+
+.page-list
+  %p
+    = "Page: "
+    %ul
+      - (1..page_num).each do |i|
+        %li
+          - if page == i
+            %strong=i
+          - else
+            %a{:href => route_path(@config[:articles][:page][:url]%[i])}= i
+

@@ -10,21 +10,91 @@
 #   item, use the pattern “/about/*/”; “/about/*” will also select the parent,
 #   because “*” matches zero or more characters.
 
-compile '/stylesheet/' do
-  # don’t filter or layout
+preprocess do
+  # authors may unpublish items by setting meta attribute publish: false
+  items.delete_if { |item| item[:publish] == false }
+
+  paginate_articles
+  create_tag_pages
+  add_update_item_attributes
 end
 
-compile '*' do
-  filter :erb
+compile '/static/*/' do
+end
+
+compile '/css/*/' do
+  filter :sass
+end
+
+route '/css/*/' do
+  item.identifier.chop + '.css'
+end
+
+compile '/tags/*/' do
+  filter :haml
   layout 'default'
 end
 
-route '/stylesheet/' do
-  '/style.css'
+compile %r{/articles/[0-9]+/} do
+  filter :haml
+  layout 'default'
 end
 
-route '*' do
+compile "/atom/" do
+  filter :erb
+end
+
+compile "/sitemap/" do
+  filter :erb
+end
+
+compile '*' do
+  # item[:extension] returns 'html.erb' for multi-dotted filename
+  ext = item[:extension].nil? ? nil : item[:extension].split('.').last
+
+  if ext == "html"
+  elsif ext == 'erb' || ext.nil?
+    filter :erb
+  elsif ext == 'haml'
+    filter :haml
+  elsif ext == 'md' || ext == 'markdown'
+    filter :erb
+    filter :kramdown
+  else
+    raise "Filter is not configured for item #{item.identifier} (#{ext}) in Rules file."
+  end
+
+  item[:layout] = "default" unless item[:layout]
+  layout item[:layout] unless item[:layout] == "none"
+end
+
+route "/static/*" do
+  item[:filename].gsub(%r{^content/static/}, "/")
+end
+
+route "/atom/" do
+  "/atom.xml"
+end
+
+route "/sitemap/" do
+  "/sitemap.xml"
+end
+
+route %r{/articles/1/} do
+  "/articles/index.html"
+end
+
+route %r{/articles/[0-9]+/} do
+  item.identifier.chop + ".html"
+end
+
+route %r{/articles/[0-9]+-[0-9]+-[0-9]+-.*/} do
+  item.identifier.gsub('-', '/') + "index.html"
+end
+
+route "*" do
   item.identifier + 'index.html'
 end
 
-layout '*', :erb
+layout '*', :haml, :format => :html5
+

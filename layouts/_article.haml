@@ -1,0 +1,21 @@
+---
+---
+
+- is_embedded ||= false
+.article
+  %h1
+    - if is_embedded
+      %a(href="#{route_path(item)}" title="Full article" class="permalink")= item[:title]
+    - else
+      = item[:title]
+  
+  .meta
+    .date= pretty_time(item[:created_at])
+    - if item[:tags]
+      %ul.tags
+        - item[:tags].sort.each do |tag|
+          %li
+            %a(href="/tags/#{tag}/" class='tag')= tag
+  
+  .body
+    != content || partial(item)

@@ -39,3 +39,17 @@ data_sources:
     # The path where layouts should be mounted. The layouts root behaves the
     # same as the items root, but applies to layouts rather than items.
     layouts_root: /
+
+base_url: http://website.example.com/
+
+tags:
+  page: "/tags/%s/"
+  layout: "_tag_page"
+  title: "Category: %s"
+  
+articles:
+  page:
+    size: 5
+    title: "Archive (articles from %d to %d)"
+    url: "/articles/%d/"
+    layout: "_pagination"
