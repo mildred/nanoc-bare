@@ -14,6 +14,7 @@ preprocess do
   # authors may unpublish items by setting meta attribute publish: false
   items.delete_if { |item| item[:publish] == false }
 
+  copy_static
   paginate_articles
   create_tag_pages
   add_update_item_attributes

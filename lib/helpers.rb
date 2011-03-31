@@ -94,6 +94,10 @@ def paginate_articles
 
 end
 
+# Copy static assets outside of content instead of having nanoc3 process them.
+def copy_static
+  FileUtils.cp_r 'static/.', 'output/'
+end
 
 def partial(identifier_or_item)
   item = identifier_or_item.is_a?(Nanoc3::Item) ? identifier_or_item : item_by_identifier(identifier_or_item)
