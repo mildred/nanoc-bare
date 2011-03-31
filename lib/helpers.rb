@@ -14,6 +14,10 @@ def link_item(identifier_or_item)
   relative_path_to(route_path(identifier_or_item))
 end
 
+def tags(items=nil)
+  count_tags(items).sort_by{|k,v| k}.map{ |x| x[0] }
+end
+
 # Hyphens are converted to sub-directories in the output folder.
 #
 # If a file has two extensions like Rails naming conventions, then the first extension
