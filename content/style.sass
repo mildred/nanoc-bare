@@ -1,0 +1,135 @@
+---
+title: CSS Style
+---
+
+$debug: 0
+
+@if $debug != 0
+  /***** DEBUG *****/
+  *
+    border: solid 1px transparent
+  *:hover
+    border: solid 1px black
+
+
+html
+  font-family: Georgia, Palatino, "Palatino Linotype", Times, "Times New Roman", serif
+
+.header
+  h1
+    float: right
+    text-align: right
+  .links
+    float: left
+    width: 10em
+    min-width: 150px
+  .content
+    clear: right
+    margin-left: 11em
+
+.leftcol
+  float: left
+  width: 10em
+  min-width: 150px
+  font-size: 0.7em
+
+.main
+  padding-left: 11em
+
+.footer
+  font-style: italic
+
+.meta
+  margin-top: -1em
+  font-size:  0.8em
+  .date-time .date
+    font-weight: bold
+
+.clear
+  clear: both
+.clear-left
+  clear: left
+.clear-right
+  clear: right
+
+
+h1,h2,h3,h4,h5,h6
+  color: #111
+  a
+    text-decoration: none
+
+a
+  color: #125AA7
+  &:hover
+    text-decoration: underline
+    color: #000
+
+blockquote
+  color: #606060
+
+tt, code, pre
+  background:   #eee
+
+pre
+  border:       1px solid #ddd
+  margin-left:  2em
+  margin-right: 1em
+  padding:      0.5em
+  -moz-border-radius-topleft:    1em
+  -webkit-border-radius-topleft: 1em
+  border-radius-topleft:         1em
+  -moz-border-radius-bottomright:    1em
+  -webkit-border-radius-bottomright: 1em
+  border-radius-bottomright:         1em
+
+hr
+  background: #B2CCFF
+  color:      #B2CCFF
+
+table
+  border-top:     1px solid #ddd
+  border-left:    1px solid #ddd
+
+th,td
+  border-bottom:  1px solid #ddd
+  border-right:   1px solid #ddd
+
+
+dt
+  margin-top: 0.7em
+  margin-bottom: 0.3em
+  font-style: italic
+
+ul.tags, ul.page-list, .tags
+  display: inline
+  padding: 0
+  margin:
+    left: 1em
+    right: 1em
+    top: 0
+    bottom: 0
+  *
+    margin: 0
+    padding: 0
+  li, .tag
+    display: inline
+    padding-left:  0.25em
+    border-left:   1px solid #ddd
+    &:first-child
+      border-left: none
+      padding-left: 0
+  a
+    text-decoration: none
+  a:hover
+    background-color: #eee
+
+@media screen and (min-width: 20em)
+  // If we want to implement a menu, put here the code for formal computers
+
+@media screen and (max-width: 20em)
+  // If we want to implement a menu, put here the code for smartphones
+  .leftcol
+    float: right
+  .main
+    margin: 0
+    padding: 0

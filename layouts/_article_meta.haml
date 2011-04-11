@@ -1,0 +1,14 @@
+---
+---
+
+
+%p.meta
+  %span.date-time
+    %span.date= item[:created_at].strftime('%a %d %b %Y,')
+    %span.time= item[:created_at].strftime('%I:%M %p')
+  - if item[:tags]
+    %span.tags
+      - item[:tags].sort.each do |tag|
+        %span.tag
+          %a(href="#{link_path "/tags/#{tag}/"}" class='tag')= tag
+

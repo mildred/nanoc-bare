@@ -42,6 +42,10 @@ data_sources:
 
 base_url: http://website.example.com/
 
+deploy:
+  default:
+    options: ["--rsh=ssh", '-glpPrtvz', '--del', '--delete-excluded', '--exclude=.hg', '--exclude=.git', '--exclude=.svn']
+
 tags:
   page: "/tags/%s/"
   layout: "_tag_page"
@@ -49,7 +53,12 @@ tags:
   
 articles:
   page:
-    size: 5
+    size: 10
     title: "Archive (articles from %d to %d)"
-    url: "/articles/%d/"
+    url: "/Blog/%d/"
+    layout: "_pagination"
+  index:
+    size: 10
+    title: "Mildred's Blog"
+    url: "/Blog/"
     layout: "_pagination"

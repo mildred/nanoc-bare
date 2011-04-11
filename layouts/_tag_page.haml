@@ -9,6 +9,7 @@
       - url = link_item(item)
       %h2
         %a(href="#{url}" title="Full article" class="permalink")= item[:title]
+      = render('_article_meta', :item => item)
       .body
         - if item[:excerpt]
           %p= item[:excerpt]

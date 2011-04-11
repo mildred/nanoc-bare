@@ -9,13 +9,7 @@
     - else
       = item[:title]
   
-  .meta
-    .date= pretty_time(item[:created_at])
-    - if item[:tags]
-      %ul.tags
-        - item[:tags].sort.each do |tag|
-          %li
-            %a(href="#{link_path "/tags/#{tag}/"}" class='tag')= tag
+  = render('_article_meta', :item => item)
   
   .body
     != content || partial(item)

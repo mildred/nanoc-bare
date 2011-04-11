@@ -28,22 +28,42 @@
 %html
   %head
     %title= "#{@item[:title]}"
-    %meta(content="text/html; charset=utf-8" http-equiv="Content-Type")
-    %meta(name="keywords" content="#{keywords}")
-    %meta(name="description" content="#{@item[:excerpt]}")
-    %link(href="#{link_path("/style.css")}" media="screen" rel="stylesheet" type="text/css")
+    %meta(content="text/html; charset=utf-8" http-equiv="Content-Type")/
+    %meta(name="keywords" content="#{keywords}")/
+    %meta(name="description" content="#{@item[:excerpt]}")/
+    %meta(name="viewport" content="initial-scale=1.0, width=device-width")/
+    %link(href="#{link_path("/atom.xml")}" title="ATOM Feed" rel="alternate" type="application/atom+xml")/
+    %link(rel="icon" href="#{link_path("/favicon.png")}" type="image/png")/
+    %link(rel="shortcut icon" href="#{link_path("/favicon.png")}" type="image/png")/
+    %link(href="#{link_path("/style.css")}" media="screen" rel="stylesheet" type="text/css")/
+    -if @item.identifier == '/'
+      :plain
+        <!-- Home Page Special Links -->
 
   %body
     -# needed since some content render <pre> blocks
     - content = find_and_preserve(yield)
-    #main
-      %ul
-        %li= link_unless_current "articles"
-        %li= link_unless_current "tags"
-        %li
-          %a(href="#{link_path("/atom.css")}") atom feed
+    .header
+      .links
+        %ul
+          %li
+            %a(href="#{link_item("/")}") Home
+          %li
+            %a(href="#{link_item("/Blog/")}") Blog
+      
+      .content
+        %strong Tags:
+        %ul.tags
+          - tags.each do |tag|
+            %li
+              %a{:href => link_item("/tags/#{tag}/"), :class=>'tag'}= tag
+      
       .clear
+    
+    .leftcol
+      %hr/
 
+    .main
       - if @item[:kind] == 'article'
         = render('_article', :item => @item, :content => content)
         = render('_other_articles_nav', :reference_item => @item)
@@ -52,4 +72,7 @@
         = content
       .clear
 
+    .clear
 
+    .footer
+      %hr/

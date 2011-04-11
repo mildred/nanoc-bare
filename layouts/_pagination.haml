@@ -1,30 +1,34 @@
 ---
 ---
 %h1
-  = "Archive page #{page}"
+  - if page.nil?
+    = "Last Blog Posts"
+  - else
+    = "Blog page #{page}"
 %p
   %em= "Articles from #{first+1} to #{last}"
 
 .pagination-page
-  - sorted_articles.slice(first, last).each do |item|
+  - sorted_articles.reverse.slice(first, last).reverse.each do |item|
     .excerpt
       - url = link_item(item)
       %h2
         %a(href="#{url}" title="Full article" class="permalink")= item[:title]
+      = render('_article_meta', :item => item)
       .body
         - if item[:excerpt]
           %p= item[:excerpt]
         - else
           != content || partial(item)
 
-.page-list
-  %p
-    = "Page: "
-    %ul
-      - (1..page_num).each do |i|
-        %li
-          - if page == i
-            %strong=i
-          - else
-            %a{:href => link_item(@config[:articles][:page][:url]%[i])}= i
+
+%div
+  %strong= "Page: "
+  %ul.page-list
+    - (1..page_num).each do |i|
+      %li
+        - if page == i
+          %strong=i
+        - else
+          %a{:href => link_item(@config[:articles][:page][:url]%[i])}= i
 
