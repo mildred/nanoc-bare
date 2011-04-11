@@ -18,7 +18,7 @@ preprocess do
   create_tag_pages
   add_update_item_attributes
   puts "Copy static content..."
-  #copy_static
+  copy_static
 end
 
 compile '/static/*/' do
