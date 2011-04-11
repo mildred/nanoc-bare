@@ -9,7 +9,7 @@ namespace :create do
     #require 'active_support/core_ext'
     #require 'active_support/multibyte'
     @ymd = Time.now.strftime("%Y-%m-%d")
-    @datetime = Time.now.strftime("%F %T %z")
+    @datetime = Time.now.strftime("%F %T %z").gsub(/([0-2][0-9])([0-6][0-9])$/, "\\1:\\2")
     if !ENV['title']
       $stderr.puts "\t[error] Missing title argument.\n\tusage: rake create:article title='article title'"
       exit 1
