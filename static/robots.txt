@@ -1,0 +1,2 @@
+User-agent: *
+Sitemap: http://mildred.fr/sitemap.xml
