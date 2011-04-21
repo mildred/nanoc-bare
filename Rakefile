@@ -44,7 +44,7 @@ TEMPLATE
 
   def calc_path(title)
     #year, month_day = @ymd.split('-', 2)
-    path = "content/articles/"
+    path = "content/Blog/"
     filename = @ymd + "-" + title.tr("A-Z", "a-z").gsub(/[^a-z0-9_-]+/, '_').gsub(/^_*/, "").gsub(/_*$/, "") + ".md"
     [path, filename, path + filename]
   end

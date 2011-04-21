@@ -6,6 +6,10 @@ require 'builder'
 require 'fileutils'
 require 'time'
 
+def absolute_url(item)
+  @config[:base_url] + item.path
+end
+
 def link_path(path)
   relative_path_to(path)
 end
