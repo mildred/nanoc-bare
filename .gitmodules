@@ -1,0 +1,3 @@
+[submodule "static/Scripts/json"]
+	path = static/Scripts/json
+	url = https://github.com/douglascrockford/JSON-js.git

@@ -1,66 +1,106 @@
-
+// Require json2.js
+// Require jquery 1.5
 
 $(document).ready(function(){
-  //var api_url = "http://mildred817.free.fr/api/messages.php";
-  var api_url = "/api/messages";
+  var api_url = "http://mildred817.free.fr/api/messages.php";
+  //var api_url = "/api/messages";
   var main = $(".main");
-  if(main.has(".article")){
+  if(main && $("head meta[name=x-kind]").attr("content") == "article"){
     var permalink = $("head link[rel=canonical]").attr('href');
     var api_entry = api_url + '?' + escape(permalink);
-    var comments = $("<div>")
-      .addClass("comments")
-      .appendTo(main);
-    $("<h2>")
-      .text("Comments")
-      .appendTo(comments);
-    var comments_container = $("<div>")
-      .appendTo(comments);
-    var add_comment = function(date, data){
-      var comment = $("<div>")
-        .addClass("comment")
-        .appendTo(comments_container);
-      $("<p>")
-        .addClass("meta")
-        .text(date.toLocaleString())
-        .appendTo(comments_container);
-      $("<p>")
-        .text(data)
-        .appendTo(comments_container);
-    };
-    $("<hr>").appendTo(comments);
-    var form = $("<form>")
-      .appendTo(comments);
-    $("<textarea>").appendTo(form);
-    $("<input>")
-      .attr("type", "submit")
-      .attr("value", "Reply")
-      .appendTo(form);
-    $.get(api_entry, function(data){
-      console.log(data);
-      if (!data.status) {
+    var comments = $('<div class="comments">').appendTo(main);
+    $("<h2>Comments</h2>").appendTo(comments);
+    var comments_container = $("<div>").appendTo(comments);
+
+    function transform_text(str, parent){
+      var str = str.replace("\r\n", "\n").replace("\r", "\n").replace(/\n\n+/, "\n\n");
+      var arr = str.split("\n\n");
+      for(var i = 0; i < arr.length; i++){
         $("<p>")
-          .addClass("error")
-          .text(data.data)
-          .appendTo(comments);
-      } else {
-        for(var i = 0; i < data.data.length; i++){
-          add_comment(Date.parse(dta.time), data.data[i]);
-        }
+          .text(arr[i])
+          .appendTo(parent);
       }
-    }, "json");
-    form.submit(function(event){
-      var text = form.find("textarea").text();
-      add_comment(new Date, text);
-      $.post(api_entry, text, function(data){
-        console.log(data);
-        if (!data.status) {
-          alert(data.data);
+    };
+
+    function add_comment(date, data){
+      //console.log("Add comment", date, data);
+      var comment = $('<div class="comment">').appendTo(comments_container);
+      if(typeof data == 'string') {
+        $('<p class="meta">')
+          .text(date.toLocaleString())
+          .appendTo(comment);
+        transform_text(data, comment);
+      } else {
+        $('<p class="meta">')
+          .append($("<strong>").text(data.author))
+          .append(", " + date.toLocaleString())
+          .appendTo(comment);
+        transform_text(data.content, comment);
+      }
+    };
+    
+    var form = $('<form class="comment-reply">'
+      +   '<label>Name: <input name="name" type="text" placeholder="Your Name"/></label>'
+      +   '<br/>'
+      +   '<textarea name="content"></textarea>'
+      +   '<br/>'
+      +   '<input type="submit" value="Reply"/>'
+      + '</form>')
+      .appendTo(comments);
+    $.ajax({type: 'GET', url: api_entry})
+      .complete(function(obj){
+        var data;
+        try {
+          data = JSON.parse(obj.responseText);
+        } catch (err) {
+          data = {status: false, data: err};
         }
-      }, "json");
+        console.log("GET answer", data);
+        if (!data.status) {
+          $("<p>")
+            .addClass("error")
+            .text(data.data)
+            .appendTo(comments);
+        } else {
+          for(var i = 0; i < data.data.length; i++){
+            var dte = new Date (Date.parse(data.data[i].time));
+            var dta = data.data[i].data;
+            add_comment(dte, dta);
+          }
+        }
+      });
+    form.submit(function(event){
+      var i_name = form.find("[name=name]");
+      var i_content = form.find("[name=content]");
+      var sent_data = {
+        'author':  i_name.val(),
+        'content': i_content.val()
+      };
+      $.ajax({
+        type:        'POST',
+        url:         api_entry,
+        data:        JSON.stringify(sent_data),
+        contentType: 'application/json'})
+        .complete(function(obj){
+          var data;
+          try {
+            data = $.parseJSON(obj.responseText);
+          } catch (err) {
+            data = {status: false, data: err};
+          }
+          console.log("POST answer", data);
+          if (!data.status) {
+            alert(data.data);
+          } else {
+            add_comment(new Date, sent_data);
+            i_content.val("");
+          }
+        });
       event.preventDefault();
     });
   }
 });
+
 
 /**
  * Date.parse with progressive enhancement for ISO-8601, version 2

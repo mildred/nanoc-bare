@@ -1,2 +1,3 @@
-ProxyPass /api/messages http://mildred817.free.fr/api/messages.php
+RewriteEngine on
+RewriteRule   ^messages(\?.*)? http://mildred817.free.fr/api/messages.php$1 [P]
 

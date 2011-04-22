@@ -110,7 +110,7 @@ end
 
 # Copy static assets outside of content instead of having nanoc3 process them.
 def copy_static
-  FileUtils.cp_r 'static/.', 'output/'
+  system "rsync -a --exclude=.git --exclude='*~' --delete-excluded static/. output/"
 end
 
 def partial(identifier_or_item)
