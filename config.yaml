@@ -50,4 +50,15 @@ tags:
   page:    "/tags/%s/"
   content: "= render '_index_page'"
   title:   "Category: %s"
-  
+  attributes:
+    filter: haml
+    layout: default
+    page_size: 10
+
+
+# Atom feed
+
+author_name:   Mildred Ki'Lya
+author_uri:    http://mildred.fr
+
+

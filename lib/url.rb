@@ -24,10 +24,14 @@ end
 # bypassing the use of layouts.
 #
 def route_path(identifier_or_item)
-  item = identifier_or_item.is_a?(Nanoc3::Item) ? identifier_or_item : item_by_identifier(identifier_or_item)
-  if item.reps.empty? then
-    raise Exception, "Cannot link to #{reps.identifier}. No representation generated."
+  if identifier_or_item.is_a?(Nanoc3::ItemRep) then
+    identifier_or_item.path
   else
-    item.reps[0].path
+    item = identifier_or_item.is_a?(Nanoc3::Item) ? identifier_or_item : item_by_identifier(identifier_or_item)
+    if item.reps.empty? then
+      raise Exception, "Cannot link to #{reps.identifier}. No representation generated."
+    else
+      item.reps[0].path
+    end
   end
 end

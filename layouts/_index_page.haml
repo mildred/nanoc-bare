@@ -6,7 +6,7 @@
     first = first + 1
     last = last + 1
   else
-    articles = @item.page_items.last(10).reverse
+    articles = @item.page_items.last(@item[:page_size]).reverse
     last = @item.page_items.size
     first = last - articles.size + 1
   end

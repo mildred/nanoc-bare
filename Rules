@@ -26,40 +26,44 @@ preprocess do
   copy_static
 end
 
+########################################
+## Static
+
 compile '/static/*/' do
 end
 
-compile '/css/*/' do
-  filter :sass
+route "/static/*" do
+  item[:filename].gsub(%r{^content/static/}, "/")
 end
 
-route '/css/*/' do
-  item.identifier.chop + '.css'
+########################################
+## Blog
+
+route %r{^/Blog/[0-9]+-[0-9]+-[0-9]+-.*/} do
+  item.identifier.gsub(%r{/([0-9]+)-([0-9]+)-([0-9]+)-(.*/)$}, "/\\1/\\2/\\3/\\4") + "index.html"
 end
 
-compile '/tags/*/' do
-  filter :haml
-  layout 'default'
-end
-
-compile %r{^/Blog/([0-9]+/)?$} do
-  filter :haml
-  layout 'default'
-end
-
-compile "/atom/" do
-  filter :erb
-end
-
-compile "/sitemap/" do
-  filter :erb
-end
+########################################
+## General
+## 
+## The filter depends upon the file extension and can be configured using the
+## :filter attribute
+##
+## The layout can be configured with the :layout attribute
 
 compile '*' do
   # item[:extension] returns 'html.erb' for multi-dotted filename
+  # we only want the last one
   ext = item[:extension].nil? ? nil : item[:extension].split('.').last
 
-  if ext == "html"
+  if not @item[:filter].nil?
+    if @item[:filter].is_a?(Array) then
+      @item[:filter].each { |f| filter f }
+    else
+      filter @item[:filter]
+    end
+  elsif ext == "html"
+    nil
   elsif ext == 'erb' || ext.nil?
     filter :erb
   elsif ext == 'haml'
@@ -77,34 +81,66 @@ compile '*' do
     raise "Filter is not configured for item #{item.identifier} (#{ext}) in Rules file."
   end
 
-
   item[:layout] = "default" unless item[:layout]
   layout item[:layout] unless item[:layout] == "none"
 end
 
-route "/static/*" do
-  item[:filename].gsub(%r{^content/static/}, "/")
-end
+## The routing can be customized using the route_#{rep} and route_match_#{rep}
+##
+## If not specified,
+##   only the default route is routed to "index.html"
+## If route_match is specified,
+##   route_match is interpreted as a regular expression, matched with the item
+##   identifier and route is the replacement of this regular expression
+## If route starts with '/'
+##   it is used as the route
+## Else
+##   route is appended to the item identifier and /*/../ patterns are simplified
 
-route "/atom/" do
-  "/atom.xml"
-end
-
-route '/style/' do
-  "/style.css"
-end
-
-route "/sitemap/" do
-  "/sitemap.xml"
-end
-
-route %r{^/Blog/[0-9]+-[0-9]+-[0-9]+-.*/} do
-  item.identifier.gsub(%r{/([0-9]+)-([0-9]+)-([0-9]+)-(.*/)$}, "/\\1/\\2/\\3/\\4") + "index.html"
-end
 
 route "*" do
-  item.identifier + 'index.html'
+  route = @item["route_#{@rep.name}".to_sym]
+  if route.nil? then
+    if @rep.name == :default then
+      @item.identifier + 'index.html'
+    else
+      nil
+    end
+  else
+    route_match = @item["route_match_#{@rep.name}".to_sym]
+    if route_match.nil? then
+      if route =~ /^\// then
+        route
+      else
+        oldpath = @item.identifier + route
+        path = oldpath.gsub(%r{/[^/]+/\.\./}, "/")
+        while path != oldpath do
+          oldpath = path
+          path = path.gsub(%r{/[^/]+/\.\./}, "/")
+        end
+        path
+      end
+    else
+      @item.identifier.gsub(Regexp.new(route_match), route)
+    end
+  end
 end
 
+########################################
+## Atom
+
+compile "*", :rep => :atom do
+  layout "atom"
+end
+
+route "*", :rep => :atom do
+  if @item.paginated? then
+    @item.identifier + "atom.xml"
+  end
+end
+
+########################################
+
+layout 'atom', :erb
 layout '*', :haml, :format => :html5
 

@@ -15,7 +15,8 @@ module Tagging
         { :title     => @config[:tags][:title] % tag,
           :tag       => tag,
           :page_size => 10,
-          :kind      => 'tag'},
+          :kind      => 'tag'
+        }.merge(@config[:tags][:attributes]),
         # identifier
         @config[:tags][:page] % tag,
         # options
