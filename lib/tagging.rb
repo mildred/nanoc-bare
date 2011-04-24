@@ -12,13 +12,15 @@ module Tagging
         # haml content
         "= render('#{@config[:tags][:layout]}', :tag => '#{tag}')",
         # do not include in sitemap.xml
-        { :title => @config[:tags][:title] % tag, :is_hidden => true},
+        { :title     => @config[:tags][:title] % tag,
+          :tag       => tag,
+          :page_size => 10},
         # identifier
         @config[:tags][:page] % tag,
         # options
         :binary => false
       )
-      item.page_items = items_with_tag(tag, items)
+      item.page_items = items_with_tag(tag, items).sort { |x, y| x[:created_at] <=> y[:created_at] }
       items << item
     end
   end

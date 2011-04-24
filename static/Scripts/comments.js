@@ -11,93 +11,115 @@ $(document).ready(function(){
     var comments = $('<div class="comments">').appendTo(main);
     $("<h2>Comments</h2>").appendTo(comments);
     var comments_container = $("<div>").appendTo(comments);
-
-    function transform_text(str, parent){
-      var str = str.replace("\r\n", "\n").replace("\r", "\n").replace(/\n\n+/, "\n\n");
-      var arr = str.split("\n\n");
-      for(var i = 0; i < arr.length; i++){
-        $("<p>")
-          .text(arr[i])
-          .appendTo(parent);
-      }
-    };
-
-    function add_comment(date, data){
-      //console.log("Add comment", date, data);
-      var comment = $('<div class="comment">').appendTo(comments_container);
-      if(typeof data == 'string') {
-        $('<p class="meta">')
-          .text(date.toLocaleString())
-          .appendTo(comment);
-        transform_text(data, comment);
-      } else {
-        $('<p class="meta">')
-          .append($("<strong>").text(data.author))
-          .append(", " + date.toLocaleString())
-          .appendTo(comment);
-        transform_text(data.content, comment);
-      }
-    };
     
-    var form = $('<form class="comment-reply">'
-      +   '<label>Name: <input name="name" type="text" placeholder="Your Name"/></label>'
-      +   '<br/>'
-      +   '<textarea name="content"></textarea>'
-      +   '<br/>'
-      +   '<input type="submit" value="Reply"/>'
-      + '</form>')
-      .appendTo(comments);
-    $.ajax({type: 'GET', url: api_entry})
-      .complete(function(obj){
-        var data;
-        try {
-          data = JSON.parse(obj.responseText);
-        } catch (err) {
-          data = {status: false, data: err};
-        }
-        console.log("GET answer", data);
-        if (!data.status) {
+    if(! $.support.cors) {
+      $("<p>")
+        .text("Sorry, you don't have a browser with XmlHttpRequest enabled for "
+        + "cross domain. The web site cannot fetch the comments on the remote "
+        + "server.")
+        .appendTo(comments_container);
+    } else {
+
+      function transform_text(str, parent){
+        var str = str.replace("\r\n", "\n").replace("\r", "\n").replace(/\n\n+/, "\n\n");
+        var arr = str.split("\n\n");
+        for(var i = 0; i < arr.length; i++){
           $("<p>")
-            .addClass("error")
-            .text(data.data)
-            .appendTo(comments);
-        } else {
-          for(var i = 0; i < data.data.length; i++){
-            var dte = new Date (Date.parse(data.data[i].time));
-            var dta = data.data[i].data;
-            add_comment(dte, dta);
-          }
+            .text(arr[i])
+            .appendTo(parent);
         }
-      });
-    form.submit(function(event){
-      var i_name = form.find("[name=name]");
-      var i_content = form.find("[name=content]");
-      var sent_data = {
-        'author':  i_name.val(),
-        'content': i_content.val()
       };
-      $.ajax({
-        type:        'POST',
-        url:         api_entry,
-        data:        JSON.stringify(sent_data),
-        contentType: 'application/json'})
-        .complete(function(obj){
-          var data;
-          try {
-            data = $.parseJSON(obj.responseText);
-          } catch (err) {
-            data = {status: false, data: err};
-          }
-          console.log("POST answer", data);
-          if (!data.status) {
-            alert(data.data);
-          } else {
-            add_comment(new Date, sent_data);
-            i_content.val("");
-          }
+
+      function add_comment(date, data){
+        //console.log("Add comment", date, data);
+        var comment = $('<div class="comment">').appendTo(comments_container);
+        if(typeof data == 'string') {
+          $('<p class="meta">')
+            .text(date.toLocaleString())
+            .appendTo(comment);
+          transform_text(data, comment);
+        } else {
+          $('<p class="meta">')
+            .append($("<strong>").text(data.author))
+            .append(", " + date.toLocaleString())
+            .appendTo(comment);
+          transform_text(data.content, comment);
+        }
+      };
+      
+      function reload_comments(){
+        comments_container.empty();
+        $.ajax({type: 'GET', url: api_entry})
+          .complete(function(obj){
+            var data;
+            try {
+              data = JSON.parse(obj.responseText);
+            } catch (err) {
+              data = {status: false, data: err};
+            }
+            console.log("GET answer", data);
+            if (!data.status) {
+              $("<p>")
+                .addClass("error")
+                .text(data.data)
+                .appendTo(comments);
+            } else {
+              for(var i = 0; i < data.data.length; i++){
+                var dte = new Date (Date.parse(data.data[i].time));
+                var dta = data.data[i].data;
+                add_comment(dte, dta);
+              }
+            }
+          });
+      }
+      
+      $('<a href="" class="meta">Reload</a>')
+        .appendTo(comments)
+        .click(function(event){
+          reload_comments();
+          event.preventDefault();
         });
-      event.preventDefault();
-    });
+      
+      reload_comments();
+      var form = $('<h3>Reply</h3>'
+        + '<form class="comment-reply">'
+        +   '<label>Name: <input name="name" type="text" placeholder="Your Name"/></label>'
+        +   '<br/>'
+        +   '<textarea name="content"></textarea>'
+        +   '<br/>'
+        +   '<input type="submit" value="Reply"/>'
+        + '</form>')
+        .appendTo(comments)
+        .submit(function(event){
+          var i_name = form.find("[name=name]");
+          var i_content = form.find("[name=content]");
+          var sent_data = {
+            'author':  i_name.val(),
+            'content': i_content.val()
+          };
+          $.ajax({
+            type:        'POST',
+            url:         api_entry,
+            data:        JSON.stringify(sent_data),
+            contentType: 'application/json'})
+            .complete(function(obj){
+              var data;
+              try {
+                data = $.parseJSON(obj.responseText);
+              } catch (err) {
+                data = {status: false, data: err};
+              }
+              console.log("POST answer", data);
+              if (!data.status) {
+                alert(data.data);
+              } else {
+                add_comment(new Date, sent_data);
+                i_content.val("");
+              }
+            });
+          event.preventDefault();
+        });
+    }
   }
 });
 
