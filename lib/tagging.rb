@@ -5,16 +5,17 @@ module Tagging
 
   include TaggingExtra
 
-  # Creates in-memory tag pages from partial: layouts/_tag_page.haml
+  # Creates in-memory tag pages
   def create_tag_pages
     tag_set(items).each do |tag|
       item = Nanoc3::Item.new(
-        # haml content
-        "= render('#{@config[:tags][:layout]}', :tag => '#{tag}')",
+        # content
+        @config[:tags][:content],
         # do not include in sitemap.xml
         { :title     => @config[:tags][:title] % tag,
           :tag       => tag,
-          :page_size => 10},
+          :page_size => 10,
+          :kind      => 'tag'},
         # identifier
         @config[:tags][:page] % tag,
         # options

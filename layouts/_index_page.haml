@@ -1,22 +1,20 @@
----
----
 :ruby
   if @item[:paginate] then
     first = @item[:first_item]
     last  = @item[:last_item]
     articles = @item.page_items
-    sub_pages = @item.page_parent.sub_pages
     first = first + 1
     last = last + 1
   else
     articles = @item.page_items.last(10).reverse
-    sub_pages = @item.sub_pages
     last = @item.page_items.size
     first = last - articles.size + 1
   end
 
-%h1
-  = "#{tag.capitalize} Articles"
+- if @item[:title]
+  %h1= @item[:title]
+- elsif @item[:tag]
+  %h1= @item[:tag].capitalize
 
 %p= "Articles from #{first} to #{last}"
 
@@ -33,13 +31,5 @@
         - else
           != content || partial(item)
 
-%div
-  %strong= "Page: "
-  %ul.page-list
-    - (1..@item[:num_pages]).each do |i|
-      %li
-        - if @item[:page] == i
-          %strong=i
-        - else
-          %a{:href => link_item(sub_pages[i])}= i
+= render '_pages'
 

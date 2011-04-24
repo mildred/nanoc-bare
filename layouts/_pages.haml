@@ -1,0 +1,29 @@
+:ruby
+  if not @item.page_parent.nil? then
+    # child page
+    sub_pages = @item.page_parent.sub_pages
+  elsif not @item.sub_pages.nil? then
+    # parent page
+    sub_pages = @item.sub_pages
+  else
+    # not paginated
+    sub_pages = []
+  end
+
+- if not @item[:num_pages].nil?
+  .page-list
+    %strong= "Page: "
+    %ul.page-list
+      - (1..@item[:num_pages]).each do |i|
+        %li
+          - if @item[:page] == i
+            %strong=i
+          - else
+            %a{:href => link_item(sub_pages[i])}= i
+      %li
+        - if not @item.page_parent.nil?
+          %a{:href => link_item(@item.page_parent)}= "latest"
+        - else
+          %strong= "latest"
+  
+  

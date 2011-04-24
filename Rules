@@ -14,10 +14,14 @@ preprocess do
   # authors may unpublish items by setting meta attribute publish: false
   items.delete_if { |item| item[:publish] == false }
 
+  # First, update metadata for every page
   add_update_item_attributes
-  paginate_articles
+  # Create additional pages
   create_tag_pages
+  create_index
+  # Paginate
   create_pages
+  
   puts "Copy static content..."
   copy_static
 end
@@ -92,10 +96,6 @@ end
 
 route "/sitemap/" do
   "/sitemap.xml"
-end
-
-route %r{^/Blog/[0-9]+/$} do
-  item.identifier.chop + ".html"
 end
 
 route %r{^/Blog/[0-9]+-[0-9]+-[0-9]+-.*/} do

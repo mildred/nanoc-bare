@@ -47,18 +47,7 @@ deploy:
     options: ["--rsh=ssh", '-glpPrtvz', '--del', '--delete-excluded', '--exclude=.hg', '--exclude=.git', '--exclude=.svn']
 
 tags:
-  page: "/tags/%s/"
-  layout: "_tag_page"
-  title: "Category: %s"
+  page:    "/tags/%s/"
+  content: "= render '_index_page'"
+  title:   "Category: %s"
   
-articles:
-  page:
-    size: 10
-    title: "Archive (articles from %d to %d)"
-    url: "/Blog/%d/"
-    layout: "_pagination"
-  index:
-    size: 10
-    title: "Mildred's Blog"
-    url: "/Blog/"
-    layout: "_pagination"
