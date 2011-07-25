@@ -18,7 +18,6 @@ preprocess do
   add_update_item_attributes
   # Create additional pages
   create_tag_pages
-  create_index
   # Paginate
   create_pages
   
@@ -140,6 +139,7 @@ route "*", :rep => :atom do
 end
 
 ########################################
+## Layouts
 
 layout 'atom', :erb
 layout '*', :haml, :format => :html5

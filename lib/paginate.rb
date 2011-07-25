@@ -10,15 +10,23 @@ class Nanoc3::Item
 end
 
 module Paginate
+
+  def items_of_kind(kind, items)
+    items.select { |i| i[:kind] == kind }
+  end
   
   def paginated_items(items)
     items.select { |i| i.paginated? }
   end
   
   def create_pages
+    items.select { |i| not i[:index_kind].nil? }.each do |index|
+      index.page_items = items_of_kind(index[:index_kind], items).sort { |x, y| x[:created_at] <=> y[:created_at] }
+    end
     paginated_items(items).each do |item|
       #puts "Paginate #{item.identifier}"
       page_size = item[:page_size] or 10
+      # TODO: use config file
       groups = []
       elements = Array.new(item.page_items)
       item.sub_pages = []

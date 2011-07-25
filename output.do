@@ -1,0 +1,7 @@
+(
+
+nanoc compile
+
+) >&2
+
+

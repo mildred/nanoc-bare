@@ -28,7 +28,9 @@ def route_path(identifier_or_item)
     identifier_or_item.path
   else
     item = identifier_or_item.is_a?(Nanoc3::Item) ? identifier_or_item : item_by_identifier(identifier_or_item)
-    if item.reps.empty? then
+    if item.nil? then
+      raise Exception, "Cannot link to #{identifier_or_item}. No representation generated."
+    elsif item.reps.empty? then
       raise Exception, "Cannot link to #{reps.identifier}. No representation generated."
     else
       item.reps[0].path
