@@ -2,6 +2,10 @@
   %span.date-time
     %span.date= item[:created_at].strftime('%a %d %b %Y,')
     %span.time= item[:created_at].strftime('%I:%M %p')
+  - if item[:author]
+    %span.author
+      by
+      %span.author-name= item[:author]
   - if item[:tags]
     %span.tags
       - item[:tags].sort.each do |tag|

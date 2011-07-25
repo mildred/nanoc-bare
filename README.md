@@ -4,46 +4,50 @@ Bare Website with nanoc3
 This repository contains a bare website that uses nanoc3 to power it up. It has
 additional features compared to the standard nanoc website:
 
-  - tags
-  - pagination, the right way for static websites
-  - support for static assets
+ -  tags
+ -  pagination, the right way for static websites
+ -  support for static assets
 
 Meta information
 ================
 
-  - `publish: true|false`
+ -  `publish: true|false`
 
     Set to false to disable publishing
     
-  - `filter:`
+ -  `filter:`
   
     Filter or filters to use
     
-  - `layout: ""`
+ -  `layout: ""`
   
     Layout to use
 
 Metadata:
 
-  - `title: ""`
+ -  `title: ""`
     
     Page title
     
-  - `tags:`
+ -  `tags:`
     
     List of tags associated with the page
     
-  - `kind: ""`
+ -  `kind: ""`
 
     The kind of page, to be part of an index of this kind
+  
+ -  `author:`
+  
+ -  `excerpt:`
 
 For paginated pages:
 
-  - `index_kind: ""`
+ -  `index_kind: ""`
     
     The kind of elements that is going to appear in the index
     
-  - `page_size: 10`
+ -  `page_size: 10`
   
     The number of elements in the pages
 
@@ -57,10 +61,10 @@ Start
 
 Modify the following keys in `config.yaml`:
 
-  - base_url
-  - deploy.default.dst
-  - author_name
-  - author_uri
+ -  base_url
+ -  deploy.default.dst
+ -  author_name
+ -  author_uri
 
 Modify the front page: `content/index.haml`
 

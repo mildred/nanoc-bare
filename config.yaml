@@ -44,6 +44,7 @@ base_url: http://website.example.com/
 
 deploy:
   default:
+    dst: "username@host:directory"
     options: ["--rsh=ssh", '-glpPrtvz', '--del', '--delete-excluded', '--exclude=.hg', '--exclude=.git', '--exclude=.svn']
 
 tags:

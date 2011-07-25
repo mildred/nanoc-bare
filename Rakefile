@@ -28,6 +28,7 @@ namespace :create do
 title:      #{title}
 created_at: #{@datetime}
 excerpt:
+author:     #{`whoami`.capitalize}
 kind:       article
 publish:    true
 tags:

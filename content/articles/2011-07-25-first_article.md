@@ -2,6 +2,7 @@
 title:      First article
 created_at: 2011-07-25 13:20:12 +02:00
 excerpt:
+author:     Administrator
 kind:       article
 publish:    true
 tags:
