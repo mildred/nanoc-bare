@@ -15,7 +15,7 @@
 !!! Strict
 %html
   %head
-    %title= "#{@item[:title]}"
+    %title= "#{@item[:title]} - #{@config[:site_name]}"
     %meta(charset="utf-8")/
     %meta(http-equiv="Content-Type" content="text/html; charset=utf-8")/
     %meta(name="keywords"    content="#{keywords}")/
@@ -39,21 +39,19 @@
     -# needed since some content render <pre> blocks
     - content = find_and_preserve(yield)
     .header
-      .links
-        %ul
-          %li
-            %a(href="#{link_item("/")}") Home
-          %li
-            %a(href="#{link_item("/articles/")}") Articles
+      = render "_menu"
       
       .content
+        %h1
+          %a(href="#{link_item("/")}")= @config[:site_name]
+
         %strong Tags:
         %ul.tags
           - tags.each do |tag|
             %li
               %a{:href => link_item("/tags/#{tag}/"), :class=>'tag'}= tag
       
-      .clear
+      
     
     .leftcol
 

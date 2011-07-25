@@ -1,0 +1,15 @@
+.links
+  
+  %a(href="#{link_item("/")}")
+    %img(src="#{link_path("/logo.png")}" alt="")
+
+  %ul
+    %li
+      %a(href="#{link_item("/")}") Home
+    %li
+      %a(href="#{link_item("/articles/")}") Articles
+
+  %p
+    :markdown
+      You can configure this menu in `layouts/_menu.haml`
+

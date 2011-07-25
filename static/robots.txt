@@ -1,2 +1,2 @@
 User-agent: *
-Sitemap: http://mildred.fr/sitemap.xml
+Sitemap: http://website.example.com/sitemap.xml

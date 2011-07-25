@@ -72,11 +72,17 @@ Start
 Modify the following keys in `config.yaml`:
 
  -  base_url
+ -  site_name
  -  deploy.default.dst
  -  author_name
  -  author_uri
 
 Modify the front page: `content/index.haml`
+
+Modify the static assets:
+
+ -  `static/logo.png`
+ -  `static/robots.txt`
 
 Delete the default article and create your own using `rake create:article`
 
