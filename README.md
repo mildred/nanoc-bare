@@ -52,6 +52,22 @@ TODO: documents properties introduced by `Rules`.
 How To
 ======
 
+Start
+-----
+
+Modify the following keys in `config.yaml`:
+
+  - base_url
+  - deploy.default.dst
+  - author_name
+  - author_uri
+
+Modify the front page: `content/index.haml`
+
+Delete the default article and create your own using `rake create:article`
+
+Update `layouts/defaults.haml` to suit your own needs.
+
 Create a new article
 --------------------
 
