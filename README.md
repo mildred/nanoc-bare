@@ -15,6 +15,16 @@ Meta information
 
     Set to false to disable publishing
     
+  - `filter:`
+  
+    Filter or filters to use
+    
+  - `layout: ""`
+  
+    Layout to use
+
+Metadata:
+
   - `title: ""`
     
     Page title
