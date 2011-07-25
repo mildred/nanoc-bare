@@ -38,8 +38,20 @@ Metadata:
     The kind of page, to be part of an index of this kind
   
  -  `author:`
+    
+    Author Name
   
  -  `excerpt:`
+ 
+    Excerpt
+  
+ -  `created_at:`
+ 
+    Creation time
+  
+ -  `updated_at:`
+ 
+    Updated automatically 
 
 For paginated pages:
 
@@ -50,8 +62,6 @@ For paginated pages:
  -  `page_size: 10`
   
     The number of elements in the pages
-
-TODO: documents properties introduced by `Rules`.
 
 How To
 ======
@@ -89,6 +99,14 @@ Set the `kind` property of the elements you want to paginate to a specific
 string and create a page that have the `index_kind` property set and that
 contains the haml code:
 
-    = render "_index_page"
+    = render "_index_page", :header => true
 
 An associated atom feed will be created.
+
+TODO List
+=========
+
+ -  Have a configurable list of source streams. A rake/redo task should be able
+    to import the articles in a RSS/Atom feed. Perhaps a source git repository
+    can also be used.
+
