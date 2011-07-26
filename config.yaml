@@ -40,7 +40,7 @@ data_sources:
     # same as the items root, but applies to layouts rather than items.
     layouts_root: /
 
-base_url: http://website.example.com/
+base_url: http://website.example.com
 site_name: My New Website
 
 deploy:
