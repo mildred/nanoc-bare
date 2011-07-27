@@ -34,12 +34,11 @@ html
     img
       max-width: 9.5em
   .title
-    margin-left: 10em
     border-bottom: 2px solid #125AA7
     h1
       margin: 0
-  .content
-    float: left
+  .title, .content
+    margin-left: 10em
   .right
     float: right
     width: 10em
@@ -55,6 +54,8 @@ html
       padding: 0
       & > li
         // width: $width_menu
+        display: inline-block
+        vertical-align: top
         margin: 0
         padding:
           left: 0.5em
@@ -62,7 +63,6 @@ html
         &:last-child
           border-right: none
         border-right: 1px solid #ddd
-        float: left
         list-style-type: none
         & > *
           font-size: $font_size_menu
@@ -188,7 +188,7 @@ ul.tags, ul.page-list, .tags
 @media screen and (max-width: 20em)
   // If we want to implement a menu, put here the code for smartphones
   .header
-    .title
+    .title, .content
       margin: 0
       clear: both
   .leftcol
