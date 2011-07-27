@@ -40,13 +40,21 @@
     -# needed since some content render <pre> blocks
     - content = find_and_preserve(yield)
     .header
+    
+      %p.access-links
+        %a(href="#menu") Go to Menu
+        %br
+        %a(href="#content") Go to Content
 
       .left
         %a(href="#{link_item("/")}")
           %img(src="#{link_path("/logo.png")}" alt="")
 
-      %h1
-        %a(href="#{link_item("/")}")= @config[:site_name]
+      .title
+        %h1
+          %a(href="#{link_item("/")}")= @config[:site_name]
+      .float-right
+      .clear-right
       .content
         = render "_menu"
 
@@ -60,7 +68,7 @@
       
       .clear
     
-    .main
+    .main#content
       - if @item[:kind] == 'article'
         = render('_article', :item => @item, :content => content)
         %noscript

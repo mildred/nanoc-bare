@@ -18,31 +18,45 @@ html
   font-family: Georgia, Palatino, "Palatino Linotype", Times, "Times New Roman", serif
 
 .header
+  a
+    text-decoration: none
   border-bottom: 1px solid #ddd
+  .access-links
+    float: right
+    font-size: 0.7em
+    opacity: 0.5
   .left
     float: left
     width: 10em
+    height: 100%
     img
       max-width: 9.5em
-      max-height: 8em
+  .title
+    margin-left: 10em
+    border-bottom: 2px solid #125AA7
+    h1
+      margin: 0
   .content
     float: left
   .right
     float: right
     width: 10em
   .links
+    ul
+      margin: 0
     a
-      text-decoration: none
       font-weight: bold
       color: $color_link
     & > ul
       padding: 0
       & > li
+        width: 10em
         margin: 0
         padding:
           left: 0.5em
           right: 0.5em
         &:first-child
+          width: 9.5em
           padding-left: 0
           border-left: none
         border-left: 1px solid #ddd
@@ -86,6 +100,10 @@ html
   clear: left
 .clear-right
   clear: right
+.float-left
+  float: left
+.float-right
+  float: right
 
 h1, h2
   text-shadow: 2px 2px 3px rgba(135, 145, 135, 0.65)
@@ -161,10 +179,14 @@ ul.tags, ul.page-list, .tags
     background-color: #eee
 
 @media screen and (min-width: 20em)
-  // If we want to implement a menu, put here the code for formal computers
+  // If we want to implement a menu, put here the code for workstation computers
 
 @media screen and (max-width: 20em)
   // If we want to implement a menu, put here the code for smartphones
+  .header
+    .title
+      margin: 0
+      clear: both
   .leftcol
     float: right
   .main
