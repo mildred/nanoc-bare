@@ -5,6 +5,8 @@ route_default: /style.css
 
 $debug: 0
 $color_link: #125AA7
+$font_size_menu: 0.8em
+$width_menu: 13em
 
 @if $debug != 0
   /***** DEBUG *****/
@@ -41,6 +43,8 @@ html
   .right
     float: right
     width: 10em
+    & > *
+      font-size: $font_size_menu
   .links
     ul
       margin: 0
@@ -50,18 +54,18 @@ html
     & > ul
       padding: 0
       & > li
-        width: 10em
+        width: $width_menu
         margin: 0
         padding:
           left: 0.5em
           right: 0.5em
-        &:first-child
-          width: 9.5em
-          padding-left: 0
-          border-left: none
-        border-left: 1px solid #ddd
+        &:last-child
+          border-right: none
+        border-right: 1px solid #ddd
         float: left
         list-style-type: none
+        & > *
+          font-size: $font_size_menu
 
 .leftcol
   float: left

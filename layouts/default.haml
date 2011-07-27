@@ -55,8 +55,6 @@
           %a(href="#{link_item("/")}")= @config[:site_name]
       .float-right
       .clear-right
-      .content
-        = render "_menu"
 
       .right
         %strong Tags:
@@ -64,7 +62,9 @@
           - tags.each do |tag|
             %li
               %a{:href => link_item("/tags/#{tag}/"), :class=>'tag'}= tag
-      
+
+      .content
+        = render "_menu"      
       
       .clear
     
