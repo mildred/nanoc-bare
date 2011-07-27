@@ -8,6 +8,8 @@ module Tagging
   # Creates in-memory tag pages
   def create_tag_pages
     tag_set(items).each do |tag|
+      page_identifier = @config[:tags][:page] % tag
+      next unless item_by_identifier(page_identifier).nil?
       item = Nanoc3::Item.new(
         # content
         @config[:tags][:content],
@@ -18,7 +20,7 @@ module Tagging
           :kind      => 'tag'
         }.merge(@config[:tags][:attributes]),
         # identifier
-        @config[:tags][:page] % tag,
+        page_identifier,
         # options
         :binary => false
       )
