@@ -25,10 +25,10 @@ namespace :create do
 
     template = <<TEMPLATE
 ---
-title:      #{title}
+title:      "#{title}"
 created_at: #{@datetime}
 excerpt:
-author:     #{`whoami`.capitalize}
+author:     #{`whoami`.strip.capitalize}
 kind:       article
 publish:    true
 tags:
