@@ -1,3 +1,3 @@
 redo output
-rake deploy:rsync
+rake deploy:rsync >&2
 
