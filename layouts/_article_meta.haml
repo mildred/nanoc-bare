@@ -6,8 +6,8 @@
     %span.author
       by
       %span.author-name
-        - if @config[:author][item[:author]]:
-          %a(href="#{link_path @config[:author][item[:author]]}")= item[:author]
+        - if @config[:author][item[:author].to_sym]:
+          %a(href="#{link_path @config[:author][item[:author].to_sym]}")= item[:author]
         - else
           = item[:author]
   - if item[:tags]

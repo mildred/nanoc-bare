@@ -6,7 +6,11 @@ def absolute_url(identifier_or_item)
 end
 
 def link_path(path)
-  relative_path_to(path)
+  begin
+    relative_path_to(path)
+  rescue
+    path
+  end
 end
 
 def link_item(identifier_or_item)
