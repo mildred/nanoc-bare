@@ -5,10 +5,14 @@
   - if item[:author]
     %span.author
       by
-      %span.author-name= item[:author]
+      %span.author-name
+        - if @config[:author][item[:author]]:
+          %a(href="#{link_path @config[:author][item[:author]]}")= item[:author]
+        - else
+          = item[:author]
   - if item[:tags]
     %span.tags
       - item[:tags].sort.each do |tag|
         %span.tag
-          %a(href="#{link_path "/tags/#{tag}/"}" class='tag')= tag
+          %a(href="#{link_item @config[:tags][:page] % tag}" class='tag')= tag
 
