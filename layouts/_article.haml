@@ -10,4 +10,8 @@
   = render('_article_meta', :item => item)
   
   .body
-    != content || partial(item)
+    -# needed since some content render <pre> blocks
+    -# warning: find_and_preserve should be done at the last moment
+    -#          it is dependant upon the haml identation
+    != find_and_preserve(content || partial(item))
+
