@@ -79,9 +79,9 @@
             server to both retrieve the comments and post a new comment.
         .clear
       - else
-       -# needed since some content render <pre> blocks
-       -# warning: find_and_preserve should be done at the last moment
-       -#          it is dependant upon the haml identation
+        -# needed since some content render <pre> blocks
+        -# warning: find_and_preserve should be done at the last moment
+        -#          it is dependant upon the haml identation
         = find_and_preserve(yield)
         .clear
 
